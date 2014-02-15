@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClrPlus.Pygments">
+      <HintPath>..\packages\ClrPlus.Pygments.1.0.3\lib\net40\ClrPlus.Pygments.dll</HintPath>
+    </Reference>
     <Reference Include="EFConvention, Version=2.3.2.1, Culture=neutral, PublicKeyToken=f11218f391398a78, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EFConvention.2.3.2.1\lib\EFConvention.dll</HintPath>
@@ -149,6 +152,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Library\HtmlRemover.cs" />
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

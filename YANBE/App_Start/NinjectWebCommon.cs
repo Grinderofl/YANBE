@@ -1,5 +1,6 @@
 using Core.Domain;
 using EFConvention;
+using Pygments;
 using YANBE.Controllers;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(YANBE.App_Start.NinjectWebCommon), "Start")]
@@ -62,6 +63,7 @@ namespace YANBE.App_Start
                 .InSingletonScope()
                 .OnActivation(x => x.AddAssemblyContaining<Post>().AddAssemblyContaining<HomeController>().AddEntitiesBasedOn<Entity>());
             kernel.Bind<IContext>().ToMethod(x => kernel.Get<IAutoContextFactory>().Context()).InRequestScope();
+            kernel.Bind<Highlighter>().ToSelf().InSingletonScope();
         }        
     }
 }

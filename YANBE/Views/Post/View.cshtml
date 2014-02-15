@@ -1,0 +1,12 @@
+﻿@using MarkdownSharp
+@model Core.Domain.Post
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<h2>@Model.Title</h2>
+@{
+    var md = new Markdown();
+}
+@Html.Raw(md.Transform(Model.Body))

@@ -7,8 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using Core.Domain;
 using EFConvention;
-using MarkdownSharp;
-using Pygments;
 using YANBE.Library;
 using YANBE.Models;
 
@@ -17,12 +15,12 @@ namespace YANBE.Controllers
     public class PostController : Controller
     {
         private IContext _context;
-        private Highlighter _highlighter;
+        private Markdown _markdown;
 
-        public PostController(IContext context, Highlighter highlighter)
+        public PostController(IContext context, Markdown markdown)
         {
             _context = context;
-            _highlighter = highlighter;
+            _markdown = markdown;
         }
 
         public ActionResult Index()
@@ -32,26 +30,7 @@ namespace YANBE.Controllers
 
         public string Markdown(string source, bool external = true)
         {
-            if(external)
-                source = HttpUtility.UrlDecode(source);
-            var md = new Markdown();
-            var transformed = md.Transform(source);
-
-            var start = "<p>```c#";
-            var end = "```</p>";
-
-            while (transformed.IndexOf(start, StringComparison.Ordinal) > -1)
-            {
-                var startIndex = transformed.IndexOf(start, StringComparison.Ordinal);
-                var endIndex = transformed.IndexOf(end, startIndex, StringComparison.Ordinal);
-                var firstHalf = transformed.Substring(0, startIndex);
-                var secondHalf = transformed.Substring(endIndex + end.Length);
-                var text = transformed.Substring(startIndex + start.Length, endIndex - startIndex - start.Length).Replace("&gt;", ">").Replace("&lt;", "<");
-                transformed = firstHalf + _highlighter.HighlightToHtml(HtmlRemoval.StripTagsRegexCompiled(text), "c#", "vs", lineNumberStyle: LineNumberStyle.table, fragment: false) + secondHalf;
-            }
-            /*if (external)
-                return HttpUtility.UrlEncode(transformed);*/
-            return transformed;
+            return _markdown.Transform(source, external);
         }
 
         public ActionResult View(int id, string slug = "")

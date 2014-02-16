@@ -58,6 +58,7 @@
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\EntityWithCreatedDate.cs" />
     <Compile Include="Domain\Post.cs" />
+    <Compile Include="Domain\Tag.cs" />
     <Compile Include="Domain\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

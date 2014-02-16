@@ -7,24 +7,27 @@
 <h2>Create post</h2>
 
 <div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
+    <div class="col-md-12">
             @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
-                
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Title)
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Title)
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Body, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextAreaFor(m => m.Body, 60, 80, new { @class = "form-control2", style = "max-width: 100%;" })
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.TextAreaFor(m => m.Body, 60, 80, new { @class = "form-control2", style = "max-width: 100%; font-family:monospace" })
                         @Html.ValidationMessageFor(m => m.Body)
+                    </div>
+                    <div class="col-md-6">
+                        <div id="preview" class="markdown-body"></div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -33,7 +36,6 @@
                     </div>
                 </div>
             }
-        </section>
     </div>
 </div>
 
@@ -41,8 +43,38 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/markitup")
     <script type="text/javascript">
+        var requiresUpdate = false;
         $(function() {
-            $('#Body').markItUp(mySettings);
+            //$('#Body').markItUp(mySettings);
+            $('#Body').bind('input propertychange', function() {
+                requiresUpdate = true;
+            });
+            $(document).delegate('#Body', 'keydown', function (e) {
+                var keyCode = e.keyCode || e.which;
+
+                if (keyCode == 9) {
+                    e.preventDefault();
+                    var start = $(this).get(0).selectionStart;
+                    var end = $(this).get(0).selectionEnd;
+
+                    // set textarea value to: text before caret + tab + text after caret
+                    $(this).val($(this).val().substring(0, start)
+                                + "\t"
+                                + $(this).val().substring(end));
+
+                    // put caret at right position again
+                    $(this).get(0).selectionStart =
+                    $(this).get(0).selectionEnd = start + 1;
+                }
+            });
         });
+        window.setInterval(function () {
+            console.log("Interval entered");
+            if (!requiresUpdate) return;
+            $('#preview').load("@Url.Action("Markdown")/?source=" + encodeURIComponent($('#Body').val()));
+            requiresUpdate = false;
+        }, 1000);
+
     </script>
+    <script type="text/javascript" src="~/Scripts/all-combined.min.js"></script>
 }

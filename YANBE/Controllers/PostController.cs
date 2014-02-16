@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -29,14 +30,13 @@ namespace YANBE.Controllers
             return View();
         }
 
-        public ActionResult View(int id, string slug = "")
+        public string Markdown(string source, bool external = true)
         {
-            var model = _context.Set<Post>().FirstOrDefault(x => x.Id == id);
-            if (model == null) return RedirectToAction("Index", "Home");
-
+            if(external)
+                source = HttpUtility.UrlDecode(source);
             var md = new Markdown();
-            var transformed = md.Transform(model.Body);
-            
+            var transformed = md.Transform(source);
+
             var start = "<p>```c#";
             var end = "```</p>";
 
@@ -47,10 +47,19 @@ namespace YANBE.Controllers
                 var firstHalf = transformed.Substring(0, startIndex);
                 var secondHalf = transformed.Substring(endIndex + end.Length);
                 var text = transformed.Substring(startIndex + start.Length, endIndex - startIndex - start.Length).Replace("&gt;", ">").Replace("&lt;", "<");
-                transformed = firstHalf + _highlighter.HighlightToHtml(HtmlRemoval.StripTagsRegexCompiled(text), "c#", "vs", lineNumberStyle:LineNumberStyle.table, fragment:false) + secondHalf;
+                transformed = firstHalf + _highlighter.HighlightToHtml(HtmlRemoval.StripTagsRegexCompiled(text), "c#", "vs", lineNumberStyle: LineNumberStyle.table, fragment: false) + secondHalf;
             }
+            /*if (external)
+                return HttpUtility.UrlEncode(transformed);*/
+            return transformed;
+        }
 
-            model.Body = transformed;
+        public ActionResult View(int id, string slug = "")
+        {
+            var model = _context.Set<Post>().FirstOrDefault(x => x.Id == id);
+            if (model == null) return RedirectToAction("Index", "Home");
+            
+            model.Body = Markdown(model.Body, false);
             return View(model);
         }
 

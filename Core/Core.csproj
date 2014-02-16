@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EFConvention, Version=2.3.2.1, Culture=neutral, PublicKeyToken=f11218f391398a78, processorArchitecture=MSIL">
+    <Reference Include="EFConvention, Version=2.3.3.1, Culture=neutral, PublicKeyToken=f11218f391398a78, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EFConvention.2.3.2.1\lib\EFConvention.dll</HintPath>
+      <HintPath>..\packages\EFConvention.2.3.3.1\lib\EFConvention.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
@@ -57,6 +57,7 @@
     <Compile Include="Configuration\Interceptors\PreUpdateEvent.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Domain\EntityWithCreatedDate.cs" />
+    <Compile Include="Domain\Page.cs" />
     <Compile Include="Domain\Post.cs" />
     <Compile Include="Domain\Tag.cs" />
     <Compile Include="Domain\User.cs" />

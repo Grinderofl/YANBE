@@ -1,0 +1,29 @@
+﻿@using YANBE.Library
+@model YANBE.Models.TagsModel
+
+@{
+    ViewBag.Title = Model.Tag;
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="row">
+            @if (Model.Posts.Count == 0)
+            {
+                <h2>No posts to display!</h2>
+            }
+            else
+            {
+                foreach (var item in Model.Posts)
+                {
+                    <h2>@Html.ActionLink(item.Title, "View", "Post", new { item.Id, slug = item.TitleSlug }, null)</h2>
+                    @Html.Raw(item.Body)
+                    <hr />
+                    <p>Created by x at @Html.DisplayFor(x => item.PublishedDate)</p>
+
+                }
+            }
+        </div>
+    </div>
+</div>

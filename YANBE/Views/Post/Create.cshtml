@@ -20,7 +20,15 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Tags, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(m => m.Tags, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Tags)
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         @Html.TextAreaFor(m => m.Body, 60, 80, new { @class = "form-control2", style = "max-width: 100%; font-family:monospace" })

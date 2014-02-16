@@ -11,5 +11,6 @@ namespace YANBE.Models
         public string Title { get; set; }
         [AllowHtml]
         public string Body { get; set; }
+        public string Tags { get; set; }
     }
 }

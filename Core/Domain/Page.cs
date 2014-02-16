@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Domain
 {
-    public class Tag : Entity
+    public class Page : Post
     {
-        public ICollection<Post> Posts { get; set; } 
-        public string Name { get; set; }
 
     }
 }

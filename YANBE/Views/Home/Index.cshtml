@@ -1,4 +1,6 @@
-﻿@model YANBE.Models.PostViewModel
+﻿@using WebGrease.Configuration
+@using YANBE.Library
+@model YANBE.Models.IndexViewModel
 
 @{
     ViewBag.Title = "Home Page";
@@ -17,16 +19,37 @@
                 {
                     <h2>@Html.ActionLink(item.Title, "View", "Post", new { item.Id, slug = item.TitleSlug }, null)</h2>
                     @Html.Raw(item.Body)
-                <hr/>
+                    <hr/>
                     <p>Created by x at @Html.DisplayFor(x => item.PublishedDate)</p>
                 
                 }
             }
         </div>
+        <div class="row">
+            @if (Model.Page > 1)
+            {
+                @Html.ActionLink("Newer", "Index", "Home", new { page  = Model.Page - 1 }, null)
+            }
+            @if (Model.Count > (Model.Page*GlobalConfiguration.ItemsPerPage))
+            {
+                @Html.ActionLink("Older", "Index", "Home", new { page = Model.Page + 1 }, null)
+            }
+        </div>
     </div>
     <div class="col-md-4">
-        <h2>Navigation</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h4>Pages</h4>
+        <ul class="list-unstyled">
+            @foreach (var item in Model.Pages)
+            {
+                <li>@Html.ActionLink(item.Title, "View", "Page", new { id = item.Id, slug = item.TitleSlug }, null)</li>
+            }
+        </ul>
+        <h4>Tags</h4>
+        <ul class="list-unstyled">
+            @foreach (var item in Model.Tags)
+            {
+                <li>@Html.ActionLink(item.Name.Replace(" ", " "), "Details", "Tags", new { id = item.Name.Replace(" ", "-") }, null)</li>
+            }
+        </ul>
     </div>
 </div>

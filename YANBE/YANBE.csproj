@@ -44,15 +44,18 @@
     <Reference Include="ClrPlus.Pygments">
       <HintPath>..\packages\ClrPlus.Pygments.1.0.3\lib\net40\ClrPlus.Pygments.dll</HintPath>
     </Reference>
-    <Reference Include="EFConvention, Version=2.3.2.1, Culture=neutral, PublicKeyToken=f11218f391398a78, processorArchitecture=MSIL">
+    <Reference Include="EFConvention, Version=2.3.3.1, Culture=neutral, PublicKeyToken=f11218f391398a78, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EFConvention.2.3.2.1\lib\EFConvention.dll</HintPath>
+      <HintPath>..\packages\EFConvention.2.3.3.1\lib\EFConvention.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender">
+      <HintPath>..\packages\EntityFrameworkProfiler.2.0.2233.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
     </Reference>
     <Reference Include="MarkdownSharp">
       <HintPath>..\packages\MarkdownSharp.1.13.0.0\lib\35\MarkdownSharp.dll</HintPath>
@@ -143,22 +146,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\EntityFrameworkProfilerBootstrapper.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
+    <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Library\GlobalConfiguration.cs" />
     <Compile Include="Library\HtmlRemover.cs" />
     <Compile Include="Library\Markdown.cs" />
     <Compile Include="Models\PostModel.cs" />
-    <Compile Include="Models\PostViewModel.cs" />
+    <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\TagsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Start\EntityFrameworkProfilerBootstrapper.vb" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\markitup\sets\default\images\bold.png" />
@@ -244,6 +252,7 @@
     <Content Include="Views\Post\View.cshtml" />
     <Content Include="Views\Post\Create.cshtml" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
+    <Content Include="Views\Tags\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

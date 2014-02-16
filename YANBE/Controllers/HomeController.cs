@@ -21,15 +21,18 @@ namespace YANBE.Controllers
             _markdown = markdown;
         }
 
+        
         public ActionResult Index(int page = 1)
         {
             var query = _context.Set<Post>().OrderByDescending(x => x.PublishedDate);
 
-            var model = new PostViewModel()
+            var model = new IndexViewModel()
             {
                 Count = query.Count(),
-                Page = 1,
-                Posts = query.Skip((page-1)*10).Take(10).ToList()
+                Page = page,
+                Posts = query.Skip((page-1)*GlobalConfiguration.ItemsPerPage).Take(GlobalConfiguration.ItemsPerPage).ToList(),
+                Pages = _context.Set<Page>().OrderByDescending(x => x.PublishedDate).ToList(),
+                Tags = _context.Set<Tag>().OrderByDescending(x => x.Posts.Count).Take(5).ToList()
             };
             model.Posts.ForEach(x => x.Body = _markdown.Transform(x.Body, false));
             return View(model);

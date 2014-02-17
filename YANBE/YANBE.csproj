@@ -44,9 +44,9 @@
     <Reference Include="ClrPlus.Pygments">
       <HintPath>..\packages\ClrPlus.Pygments.1.0.3\lib\net40\ClrPlus.Pygments.dll</HintPath>
     </Reference>
-    <Reference Include="EFConvention, Version=2.3.3.1, Culture=neutral, PublicKeyToken=f11218f391398a78, processorArchitecture=MSIL">
+    <Reference Include="EFConvention, Version=2.3.4.1, Culture=neutral, PublicKeyToken=f11218f391398a78, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EFConvention.2.3.3.1\lib\EFConvention.dll</HintPath>
+      <HintPath>..\packages\EFConvention.2.3.4.1\lib\EFConvention.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
@@ -151,15 +151,19 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Library\Filters\InstallationOnlyFilter.cs" />
     <Compile Include="Library\GlobalConfiguration.cs" />
     <Compile Include="Library\HtmlRemover.cs" />
     <Compile Include="Library\Markdown.cs" />
+    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\TagsModel.cs" />
@@ -167,6 +171,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Start\EntityFrameworkProfilerBootstrapper.vb" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\markitup\sets\default\images\bold.png" />
@@ -223,11 +229,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.0.js" />
     <Content Include="Scripts\jquery-2.1.0.min.js" />
     <Content Include="Scripts\jquery.markitup.js" />
@@ -253,6 +264,9 @@
     <Content Include="Views\Post\Create.cshtml" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Views\Tags\Details.cshtml" />
+    <Content Include="Views\Install\Index.cshtml" />
+    <Content Include="Views\Install\CreateAccount.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
@@ -261,9 +275,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>

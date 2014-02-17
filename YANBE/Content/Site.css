@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 0px;
     padding-bottom: 20px;
 }
 
@@ -39,4 +39,14 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-valid {
     display: none;
+}
+.post h2 {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+.post hr {
+    margin-top: 5px;
+}
+.post small {
+    margin-top: 15px;
 }

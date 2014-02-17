@@ -9,6 +9,14 @@
 <div class="row">
     <div class="col-md-8">
         <div class="row">
+            @if (User.Identity.IsAuthenticated)
+            {
+                
+                <a href="@Url.Action("Create", "Post")">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+                
+            }
             @if (Model.Count == 0)
             {
                 <h2>No posts to display!</h2>
@@ -17,32 +25,74 @@
             {
                 foreach (var item in Model.Posts)
                 {
-                    <h2>@Html.ActionLink(item.Title, "View", "Post", new { item.Id, slug = item.TitleSlug }, null)</h2>
-                    @Html.Raw(item.Body)
-                    <hr/>
-                    <p>Created by x at @Html.DisplayFor(x => item.PublishedDate)</p>
-                
+                    <div class="post">
+                        <h2>
+                            @Html.ActionLink(item.Title, "View", "Post", new { item.Id, slug = item.TitleSlug }, null)
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <small class="text-right" style="float:right; font-size:50%">
+                                    <a href="@Url.Action("Edit", "Post", new {item.Id})">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </a>
+                                    <a href="@Url.Action("Delete", "Post", new {item.Id})">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </small>
+                            }
+                        </h2>
+                        <hr />
+                        @Html.Raw(item.Body)
+
+                        <p>Created by x at @Html.DisplayFor(x => item.PublishedDate)</p>
+                    </div>
                 }
             }
         </div>
         <div class="row">
-            @if (Model.Page > 1)
-            {
-                @Html.ActionLink("Newer", "Index", "Home", new { page  = Model.Page - 1 }, null)
-            }
-            @if (Model.Count > (Model.Page*GlobalConfiguration.ItemsPerPage))
-            {
-                @Html.ActionLink("Older", "Index", "Home", new { page = Model.Page + 1 }, null)
-            }
+            <div class="col-md-3">
+                @if (Model.Page > 1)
+                {
+                    @Html.ActionLink("Newer", "Index", "Home", new {page = Model.Page - 1}, null)
+                }    
+            </div>
+            
+            <div class="col-md-9 text-right">
+                @if (Model.Count > (Model.Page*GlobalConfiguration.ItemsPerPage))
+                {
+                    @Html.ActionLink("Older", "Index", "Home", new {page = Model.Page + 1}, null)
+                }
+            </div>
         </div>
     </div>
+
     <div class="col-md-4">
-        <h4>Pages</h4>
+        <h4>Pages
+            @if (User.Identity.IsAuthenticated)
+            {
+                <small>
+                    <a href="@Url.Action("Create", "Page")">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </small>
+            }
+        </h4>
         <ul class="list-unstyled">
             @foreach (var item in Model.Pages)
             {
-                <li>@Html.ActionLink(item.Title, "View", "Page", new { id = item.Id, slug = item.TitleSlug }, null)</li>
+                <li>
+                    @Html.ActionLink(item.Title, "View", "Page", new { id = item.Id, slug = item.TitleSlug }, null) 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a href="@Url.Action("Edit", "Page", new { id = item.Id })"> 
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a href="@Url.Action("Delete", "Page", new { id = item.Id })"> 
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    }
+                </li>
             }
+            
         </ul>
         <h4>Tags</h4>
         <ul class="list-unstyled">
@@ -51,5 +101,22 @@
                 <li>@Html.ActionLink(item.Name.Replace(" ", " "), "Details", "Tags", new { id = item.Name.Replace(" ", "-") }, null)</li>
             }
         </ul>
-    </div>
+        <h4>
+            Links
+            @if (User.Identity.IsAuthenticated)
+            {
+                <small>
+                    <a href="@Url.Action("Create", "Page")">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </small>
+            }
+        </h4>
+        <ul class="list-unstyled">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+            }
+        </ul>
+</div>
 </div>

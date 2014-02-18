@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using System.Web.Security;
@@ -17,16 +19,41 @@ namespace YANBE.Controllers
     [InstallationOnly]
     public class InstallController : Controller
     {
-        private IContext _context;
-
-        public InstallController(IContext context)
+        public InstallController()
         {
-            _context = context;
+            
         }
 
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Settings()
+        {
+            var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+            var section = (ConnectionStringsSection)configuration.GetSection("connectionStrings");
+            var model = new SettingsModel()
+            {
+                ConnectionString = section.ConnectionStrings["DefaultConnection"].ConnectionString
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Settings(SettingsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var configuration = WebConfigurationManager.OpenWebConfiguration("~");
+                var section = (ConnectionStringsSection)configuration.GetSection("connectionStrings");
+                section.ConnectionStrings["DefaultConnection"].ConnectionString = model.ConnectionString;
+                configuration.Save();
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
 
         public ActionResult CreateAccount()
@@ -38,6 +65,7 @@ namespace YANBE.Controllers
         [HttpPost]
         public ActionResult CreateAccount(AccountModels.RegisterModel model)
         {
+            var context = DependencyResolver.Current.GetService<IContext>();
             if (ModelState.IsValid)
             {
                 var user = new User()
@@ -46,8 +74,8 @@ namespace YANBE.Controllers
                     Password = Hash.CreateHash(model.Password),
                     Email = model.Email
                 };
-                _context.Set<User>().Add(user);
-                _context.SaveChanges();
+                context.Set<User>().Add(user);
+                context.SaveChanges();
                 FormsAuthentication.SetAuthCookie(model.Username, true);
                 return RedirectToAction("Index", "Home");
             }

@@ -166,6 +166,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Models\TagsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -267,6 +268,7 @@
     <Content Include="Views\Install\Index.cshtml" />
     <Content Include="Views\Install\CreateAccount.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Install\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

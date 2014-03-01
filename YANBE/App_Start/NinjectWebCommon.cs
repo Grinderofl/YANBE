@@ -1,3 +1,4 @@
+using System.Web.Configuration;
 using Core.Domain;
 using EFConvention;
 using Pygments;
@@ -62,7 +63,10 @@ namespace YANBE.App_Start
                 .To<AutoContextFactory>()
                 .InSingletonScope()
                 .OnActivation(x => x.AddAssemblyContaining<Post>().AddAssemblyContaining<HomeController>().AddEntitiesBasedOn<Entity>());
-            kernel.Bind<IContext>().ToMethod(x => kernel.Get<IAutoContextFactory>().Context()).InRequestScope();
+            kernel.Bind<IContext>()
+                .ToMethod(x => kernel.Get<IAutoContextFactory>().Context()).InRequestScope()
+                .WithConstructorArgument("connectionString",
+                    x => WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
             kernel.Bind<Highlighter>().ToSelf().InSingletonScope();
         }        
     }

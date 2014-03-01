@@ -50,6 +50,7 @@ namespace YANBE.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(PostModel model)
         {
             if (ModelState.IsValid)

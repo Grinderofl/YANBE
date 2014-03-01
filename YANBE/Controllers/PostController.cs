@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using Core.Domain;
 using EFConvention;
 using WebGrease.Css.Extensions;
@@ -44,6 +47,7 @@ namespace YANBE.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ViewResult Create()
         {
             return View();
@@ -51,38 +55,12 @@ namespace YANBE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(PostModel model)
         {
             if (ModelState.IsValid)
             {
-                var tags = model.Tags.Split(',');
-                for (int i = 0; i < tags.Count(); i++)
-                {
-                    tags[i] = tags[i].Replace("\"", "").Trim().ToLower();
-                }
-                
-                var post = new Post()
-                {
-                    Body = model.Body,
-                    Title = model.Title,
-                    TitleSlug = Regex.Replace(model.Title, @"[^A-Za-z0-9_~]+", "-"),
-                    Tags = new Collection<Tag>()
-                };
-
-                var foundTags = _context.Set<Tag>().Where(x => tags.Contains(x.Name)).ToList();
-                foreach (var tag in tags)
-                {
-                    if (foundTags.Any(x => x.Name == tag))
-                    {
-                        post.Tags.Add(foundTags.First(x => x.Name == tag));
-                        continue;
-                    }
-                    var t = new Tag()
-                    {
-                        Name = tag
-                    };
-                    post.Tags.Add(t);
-                }
+                var post = Mapper.Map<Post>(model);
                 _context.Set<Post>().Add(post);
                 _context.SaveChanges();
                 return RedirectToAction("View", new {id = post.Id, slug = post.TitleSlug});
@@ -90,9 +68,28 @@ namespace YANBE.Controllers
             return View(model);
         }
 
-        public ViewResult Edit(int id)
+        [Authorize]
+        public ActionResult Edit(int id)
         {
-            return null;
+            var model = _context.Set<Post>().Include(x => x.Tags).FirstOrDefault(x => x.Id == id);
+            if (model == null) return RedirectToAction("Index", "Home");
+            return View(Mapper.Map<PostEditModel>(model));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Edit(PostEditModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var foundPost = _context.Set<Post>().FirstOrDefault(x => x.Id == model.Id);
+                if (foundPost == null) return RedirectToAction("Index", "Home");
+                Mapper.Map(model, foundPost);
+                _context.SaveChanges();
+                return RedirectToAction("Edit", new { id = model.Id });
+            }
+            return View(model);
         }
     }
 }

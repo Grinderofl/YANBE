@@ -17,6 +17,7 @@ namespace YANBE
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             HibernatingRhinos.Profiler.Appender.EntityFramework.EntityFrameworkProfiler.Initialize();
+            AutoMapperConfiguration.Configure();
         }
     }
 }

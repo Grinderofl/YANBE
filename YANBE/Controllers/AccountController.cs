@@ -33,15 +33,21 @@ namespace YANBE.Controllers
             if (found == null)
                 ModelState.AddModelError("Name", "Invalid user or password");
 
-            if (!Hash.ValidatePassword(model.Password, found.Password))
-                ModelState.AddModelError("Name", "Invalid user or password");
-
             if (ModelState.IsValid)
             {
+                if (!Hash.ValidatePassword(model.Password, found.Password))
+                    ModelState.AddModelError("Name", "Invalid user or password");
+
                 FormsAuthentication.SetAuthCookie(model.Username, model.RememberMe);
                 return RedirectToAction("Index", "Home");
             }
             return View(model);
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

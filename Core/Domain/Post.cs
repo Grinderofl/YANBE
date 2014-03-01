@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Core.Domain
         public Post()
         {
             PublishedDate = DateTime.Now;
+            Tags = new Collection<Tag>();
         }
         //public User Author { get; set; }
         public string TitleSlug { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Web.Mvc;
 using Core.Domain;
 using EFConvention;
@@ -8,9 +9,9 @@ namespace YANBE.Controllers
 {
     public class TagsController : Controller
     {
-        private IContext _context;
+        private DbContext _context;
 
-        public TagsController(IContext context)
+        public TagsController(DbContext context)
         {
             _context = context;
         }

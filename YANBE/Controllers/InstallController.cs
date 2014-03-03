@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -65,7 +66,7 @@ namespace YANBE.Controllers
         [HttpPost]
         public ActionResult CreateAccount(AccountModels.RegisterModel model)
         {
-            var context = DependencyResolver.Current.GetService<IContext>();
+            var context = DependencyResolver.Current.GetService<DbContext>();
             if (ModelState.IsValid)
             {
                 var user = new User()

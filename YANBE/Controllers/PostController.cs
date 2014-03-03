@@ -19,13 +19,14 @@ namespace YANBE.Controllers
 {
     public class PostController : Controller
     {
-        private IContext _context;
+        private DbContext _context;
         private Markdown _markdown;
-
-        public PostController(IContext context, Markdown markdown)
+        
+        public PostController(DbContext context, Markdown markdown)
         {
             _context = context;
             _markdown = markdown;
+        
         }
 
         public ActionResult Index()
@@ -40,7 +41,7 @@ namespace YANBE.Controllers
 
         public ActionResult View(int id, string slug = "")
         {
-            var model = _context.Set<Post>().FirstOrDefault(x => x.Id == id);
+            var model = _context.Set<Post>().Include(x => x.Tags).FirstOrDefault(x => x.Id == id);
             if (model == null) return RedirectToAction("Index", "Home");
             
             model.Body = Markdown(model.Body, false);
@@ -83,8 +84,9 @@ namespace YANBE.Controllers
         {
             if (ModelState.IsValid)
             {
-                var foundPost = _context.Set<Post>().FirstOrDefault(x => x.Id == model.Id);
+                var foundPost = _context.Set<Post>().Include(x => x.Tags).FirstOrDefault(x => x.Id == model.Id);
                 if (foundPost == null) return RedirectToAction("Index", "Home");
+                
                 Mapper.Map(model, foundPost);
                 _context.SaveChanges();
                 return RedirectToAction("Edit", new { id = model.Id });

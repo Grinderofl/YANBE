@@ -7,14 +7,15 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/markitup")
     @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("header", false)
 </head>
 <body>
     <div class="container body-content">
-        <h1>Nero's blog</h1>
+        <h1>@Html.ActionLink("Nero's blog", "Index", "Home")</h1>
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Nero Sule</p>
         </footer>
     </div>
 

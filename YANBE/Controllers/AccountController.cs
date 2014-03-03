@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,9 +14,9 @@ namespace YANBE.Controllers
 {
     public class AccountController : Controller
     {
-        private IContext _context;
+        private DbContext _context;
 
-        public AccountController(IContext context)
+        public AccountController(DbContext context)
         {
             _context = context;
         }

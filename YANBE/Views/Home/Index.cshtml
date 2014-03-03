@@ -1,11 +1,16 @@
-﻿@using WebGrease.Configuration
+﻿@using System.Security.Policy
 @using YANBE.Library
 @model YANBE.Models.IndexViewModel
 
 @{
     ViewBag.Title = "Home Page";
 }
-
+@section header
+{
+    <script type="text/javascript">var switchTo5x = true;</script>
+    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">stLight.options({ publisher: "389dabf0-7be8-425e-8205-8dded2c4c406", doNotHash: false, doNotCopy: false, hashAddressBar: true });</script>
+}
 <div class="row">
     
     <!-- Posts -->
@@ -59,7 +64,37 @@
                                     </small>
                                 </div>
                             </div>
-                            
+                            @if (item.Tags != null && item.Tags.Any())
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Tags:
+                                        @{
+                                            var list = item.Tags.Select(tag => Html.ActionLink(tag.Name, "Details", "Tags", new {id = tag.Name}, null)).ToList();
+                                            @Html.Raw(string.Join(", ", list))
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            <div class="row" id="sharethis">
+                                <div class="col-md-12">
+                                    @{
+                                        var shares = new Dictionary<string, string>()
+                                        {
+                                            { "st_sharethis", "ShareThis" },
+                                            { "st_facebook", "Facebook" },
+                                            { "st_twitter", "Tweet" },
+                                            { "st_googleplus", "Google +" },
+                                            { "st_email", "Email" },
+                                            { "st_linkedin", "LinkedIn" },
+                                        };
+                                        foreach (var share in shares)
+                                        {
+                                            <span class="@share.Key" st_url="@Url.Action("View", "Post", new { item.Id, slug = item.TitleSlug })" st_title="@item.Title"></span>
+                                        }
+                                    }
+                                </div>
+                            </div>
                         </div>
                     }
                 }

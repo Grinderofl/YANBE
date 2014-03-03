@@ -1,3 +1,4 @@
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Configuration;
 using AutoMapper;
@@ -66,7 +67,7 @@ namespace YANBE.App_Start
                 .To<AutoContextFactory>()
                 .InSingletonScope()
                 .OnActivation(x => x.AddAssemblyContaining<Post>().AddAssemblyContaining<HomeController>().AddEntitiesBasedOn<Entity>());
-            kernel.Bind<IContext>()
+            kernel.Bind<DbContext>()
                 .ToMethod(x => kernel.Get<IAutoContextFactory>().Context()).InRequestScope()
                 .WithConstructorArgument("connectionString",
                     x => WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
@@ -78,6 +79,16 @@ namespace YANBE.App_Start
                         .BindBase()
                         .Configure(c => c.InSingletonScope()));
             kernel.Bind<Highlighter>().ToSelf().InSingletonScope();
+            Mapper.Initialize(x =>
+            {
+                var profiles =
+                    typeof (PostController).Assembly.GetTypes()
+                        .Where(t => typeof (Profile).IsAssignableFrom(t))
+                        .Union(typeof (Post).Assembly.GetTypes().Where(c => typeof (Profile).IsAssignableFrom(c)));
+                foreach (var profile in profiles)
+                    x.AddProfile(kernel.GetService(profile) as Profile);
+                x.ConstructServicesUsing(type => kernel.Get(type));
+            });
         }        
     }
 }

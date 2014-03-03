@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,10 +13,10 @@ namespace YANBE.Controllers
 {
     public class HomeController : Controller
     {
-        private IContext _context;
+        private DbContext _context;
         private Markdown _markdown;
 
-        public HomeController(IContext context, Markdown markdown)
+        public HomeController(DbContext context, Markdown markdown)
         {
             _context = context;
             _markdown = markdown;
@@ -30,7 +31,7 @@ namespace YANBE.Controllers
             {
                 Count = query.Count(),
                 Page = page,
-                Posts = query.Skip((page-1)*GlobalConfiguration.ItemsPerPage).Take(GlobalConfiguration.ItemsPerPage).ToList(),
+                Posts = query.Skip((page-1)*GlobalConfiguration.ItemsPerPage).Take(GlobalConfiguration.ItemsPerPage).Include(x => x.Tags).ToList(),
                 Pages = _context.Set<Page>().OrderByDescending(x => x.PublishedDate).ToList(),
                 Tags = _context.Set<Tag>().OrderByDescending(x => x.Posts.Count).Take(5).ToList()
             };

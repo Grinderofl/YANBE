@@ -58,6 +58,10 @@ input[type="checkbox"].input-validation-error {
 }
 .post .contents{ 
     border: 1px solid #efefef;
-    border-radius: 3px;
-    
+    border-radius: 3px;   
+}
+#sharethis span {
+     -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+      box-sizing: content-box;
 }

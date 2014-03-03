@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +15,7 @@ namespace YANBE.Library.Filters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-            if (DependencyResolver.Current.GetService<IContext>().Set<User>().Any())
+            if (DependencyResolver.Current.GetService<DbContext>().Set<User>().Any())
             {
                 filterContext.Result =
                     new RedirectToRouteResult(new RouteValueDictionary(new {controller = "Home", action = "Index"}));

@@ -48,7 +48,6 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/markitup")
     <script type="text/javascript">
         var requiresUpdate = false;
@@ -77,12 +76,12 @@
             });
         });
         window.setInterval(function () {
-            console.log("Interval entered");
             if (!requiresUpdate) return;
-            $('#preview').load("@Url.Action("Markdown")/?source=" + encodeURIComponent($('#Body').val()));
+            $.post('@Url.Action("Markdown")', { source: encodeURIComponent($('#Body').val()) }, function(data) {
+                $('#preview').html(data);
+            });
             requiresUpdate = false;
         }, 1000);
 
     </script>
-    <script type="text/javascript" src="~/Scripts/all-combined.min.js"></script>
 }

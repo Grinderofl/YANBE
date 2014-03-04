@@ -9,7 +9,7 @@
 {
     <script type="text/javascript">var switchTo5x = true;</script>
     <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-    <script type="text/javascript">stLight.options({ publisher: "389dabf0-7be8-425e-8205-8dded2c4c406", doNotHash: false, doNotCopy: false, hashAddressBar: true });</script>
+    <script type="text/javascript">stLight.options({ publisher: "389dabf0-7be8-425e-8205-8dded2c4c406", doNotHash: false, doNotCopy: false, hashAddressBar: false });</script>
 }
 <div class="row">
     
@@ -37,12 +37,12 @@
                     {
                         <div class="col-md-12 post">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-10">
                                     <h2>@Html.ActionLink(item.Title, "View", "Post", new { item.Id, slug = item.TitleSlug }, null)</h2>
                                 </div>
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <div class="col-md-4 text-right actions">
+                                    <div class="col-md-2 text-right actions">
                                         <p>
                                             <a href="@Url.Action("Edit", "Post", new {item.Id})">
                                                 <span class="glyphicon glyphicon-edit"></span>

@@ -78,7 +78,7 @@
                             }
                             <div class="row" id="sharethis">
                                 <div class="col-md-12">
-                                    @{
+                                                                        @{
                                         var shares = new Dictionary<string, string>()
                                         {
                                             { "st_sharethis", "ShareThis" },
@@ -90,7 +90,12 @@
                                         };
                                         foreach (var share in shares)
                                         {
-                                            <span class="@share.Key" st_url="@Url.Action("View", "Post", new { item.Id, slug = item.TitleSlug })" st_title="@item.Title"></span>
+                                            <span class="@share.Key" st_url="@Url.Action("View", "Post", new { item.Id, slug = item.TitleSlug }, Request.Url.Scheme)" st_title="@item.Title" st_summary="@{
+                                                                                                                                                                                           var pStart = item.Body.IndexOf("<p>");
+                                                                                                                                                                                           var pend = item.Body.IndexOf("</p>");
+                                                                                                                                                                                           var pContents = item.Body.Substring(pStart + 3, pend - pStart - 3);
+                                                                                                                                                                                           @pContents
+                                                                                                                                                                                       }"></span>
                                         }
                                     }
                                 </div>

@@ -4,6 +4,18 @@
 
 @{
     ViewBag.Title = Model.Title;
+    var pStart = Model.Body.IndexOf("<p>", System.StringComparison.Ordinal);
+    var pend = Model.Body.IndexOf("</p>", System.StringComparison.Ordinal);
+    var pContents = Model.Body.Substring(pStart + 3, pend - pStart - 3);
+}
+
+@section meta
+{
+    <meta property="og:title" content="@Model.Title"/>
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="@Url.Action("View", "Post", new { Model.Id, slug = Model.TitleSlug }, Request.Url.Scheme)" />
+    <meta property="og:description" content="@pContents" />
+    <meta property="og:site_name" content="Nero's blog" />
 }
 
 @section header
@@ -46,12 +58,7 @@
         };
             foreach (var share in shares)
             {
-                <span class="@share.Key" displaytext="@share.Value" st_url="@Url.Action("View", "Post", new { Model.Id, slug = Model.TitleSlug }, Request.Url.Scheme)" st_title="@Model.Title" st_summary="@{
-                                                                                                                                                                                           var pStart = Model.Body.IndexOf("<p>");
-                                                                                                                                                                                           var pend = Model.Body.IndexOf("</p>");
-                                                                                                                                                                                           var pContents = Model.Body.Substring(pStart + 3, pend - pStart - 3);
-                                                                                                                                                                                           @pContents
-                                                                                                                                                                                       }"></span>
+                <span class="@share.Key" displaytext="@share.Value" st_url="@Url.Action("View", "Post", new { Model.Id, slug = Model.TitleSlug }, Request.Url.Scheme)" st_title="@Model.Title" st_summary="@pContents"></span>
             }
         }
     </div>
